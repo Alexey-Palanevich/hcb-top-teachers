@@ -1,0 +1,22 @@
+{
+  "name": "hcb-top-teachers",
+  "version": "0.1.0",
+  "description": "Practicing the knowledge gained from https://tough-dev.school/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Alexey-Palanevich/hcb-top-teachers.git"
+  },
+  "author": "Aliaksei Palanevich",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/Alexey-Palanevich/hcb-top-teachers/issues"
+  },
+  "homepage": "https://github.com/Alexey-Palanevich/hcb-top-teachers#readme",
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.7"
+  }
+}
