@@ -1,10 +1,8 @@
-version: '3.8'
-
 services:
-  managers_bonus_service:
-    build: ./managers-bonus-service
+  bonus_service:
+    build: ./bonus-service
     env_file:
-      - ./managers-bonus-service/.env
+      - ./bonus-service/.env
     ports:
       - "3001:3000"
     depends_on:
@@ -14,7 +12,7 @@ services:
   managers_bonus_db:
     image: postgres:17.5-bookworm
     env_file:
-      - ./managers-bonus-service/.env
+      - ./bonus-service/.env
     ports:
       - "5431:5432"
 
