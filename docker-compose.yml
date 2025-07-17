@@ -13,7 +13,10 @@ services:
   # --- Application Services ---
 
   bonus_service:
-    build: ./bonus-service
+    build:
+      context: ./bonus-service
+      dockerfile: Dockerfile
+      target: development
     env_file:
       - ./bonus-service/.env
     ports:
@@ -23,6 +26,14 @@ services:
     depends_on:
       - broker
       - managers_bonus_db
+    volumes:
+      - ./bonus-service:/app
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--spider', 'http://localhost:3000/healthcheck'] # run inside container
+      interval: 2s
+      timeout: 10s
+      retries: 5
+
 
   managers_bonus_db:
     image: postgres:17.5-bookworm

@@ -4,7 +4,9 @@
   "description": "Practicing the knowledge gained from https://tough-dev.school/",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "docker compose up",
+    "start:dev": "docker compose up -d --build"
   },
   "repository": {
     "type": "git",
