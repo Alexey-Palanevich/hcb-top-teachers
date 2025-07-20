@@ -70,7 +70,10 @@ services:
       - task_management_data:/var/lib/postgresql/data
 
   teacher_hiring_service:
-    build: ./teacher-hiring-service
+    build:
+      context: ./teacher-hiring-service
+      dockerfile: Dockerfile
+      target: development
     env_file:
       - ./teacher-hiring-service/.env
     ports:
@@ -79,7 +82,15 @@ services:
       - hcb-top-teacher-net
     depends_on:
       - broker
-      - teacher_hiring_db # Corrected: Depends on its own database
+      - teacher_hiring_db
+    volumes:
+      - ./teacher-hiring-service:/app
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--spider', 'http://localhost:3000/healthcheck'] # run inside container
+      interval: 2s
+      timeout: 10s
+      retries: 5
+
 
   teacher_hiring_db:
     image: postgres:17.5-bookworm
