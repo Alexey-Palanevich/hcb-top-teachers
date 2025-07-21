@@ -18,7 +18,7 @@ services:
     volumes:
       - ./bonus-service:/app
     healthcheck:
-      test: ['CMD', 'wget', '--quiet', '--spider', 'http://localhost:3000/healthcheck'] # run inside container
+      test: ['CMD', 'wget', '--quiet', '--spider', 'http://0.0.0.0:3000/healthcheck'] # run inside container
       interval: 2s
       timeout: 10s
       retries: 5
