@@ -8,7 +8,7 @@ export class AppController {
 
   @Get('healthcheck')
   healthCheck() {
-    console.log('healthcheck');
+    console.log('Healthcheck: bonus-service');
     return 1;
   }
 

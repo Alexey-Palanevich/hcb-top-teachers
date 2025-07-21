@@ -10,9 +10,9 @@ class SubmitTaskInputDto implements SubmitTaskInput {
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get('healthcheck')
   healthcheck() {
-    console.log('Healthcheck: teacher-hiring');
+    console.log('Healthcheck: teacher-hiring-service');
     return 1;
   }
 
