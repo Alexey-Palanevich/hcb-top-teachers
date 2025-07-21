@@ -1,9 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {MicroserviceOptions, Transport} from "@nestjs/microservices";
+import {FastifyAdapter, NestFastifyApplication} from "@nestjs/platform-fastify";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
@@ -16,6 +17,8 @@ async function bootstrap() {
   })
 
   await app.startAllMicroservices();
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 }
-bootstrap();
+bootstrap().then(() => {
+  console.log('Teacher hiring service started')
+});
