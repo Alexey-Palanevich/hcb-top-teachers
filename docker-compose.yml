@@ -34,6 +34,11 @@ services:
       - hcb-top-teacher-net
     volumes:
       - managers_bonus_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 2s
+      timeout: 10s
+      retries: 5
 
   task_management_service:
     build: ./task-management-service
@@ -46,6 +51,13 @@ services:
     depends_on:
       - broker
       - task_management_db
+    volumes:
+      - ./task-management-service:/app
+    healthcheck:
+      test: [ 'CMD', 'wget', '--quiet', '--spider', 'http://localhost:3000/healthcheck' ] # run inside container
+      interval: 2s
+      timeout: 10s
+      retries: 5
 
   task_management_db:
     image: postgres:17.5-bookworm
@@ -57,6 +69,11 @@ services:
       - hcb-top-teacher-net
     volumes:
       - task_management_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 2s
+      timeout: 10s
+      retries: 5
 
   teacher_hiring_service:
     build:
@@ -91,6 +108,11 @@ services:
       - hcb-top-teacher-net
     volumes:
       - teacher_hiring_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 2s
+      timeout: 10s
+      retries: 5
 
   # --- Kafka Infrastructure ---
   zookeeper:
@@ -118,6 +140,12 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "9092" ]
+      interval: 2s
+      timeout: 10s
+      retries: 10
+
 
   kafka-ui:
     image: ghcr.io/kafbat/kafka-ui:latest
