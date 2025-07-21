@@ -1,17 +1,6 @@
-# This docker-compose file sets up a multi-service application using
-# a microservices architecture with Kafka for asynchronous communication.
-#
-# Each service has its own dedicated PostgreSQL database, promoting data isolation.
-#
-# To run this setup:
-# 1. Ensure you have Docker and docker-compose installed.
-# 2. Create the necessary directories for each service (e.g., ./bonus-service).
-# 3. Place the corresponding Dockerfile and .env file in each service directory.
-# 4. Run `docker-compose up -d` from your terminal in this directory.
 
 services:
   # --- Application Services ---
-
   bonus_service:
     build:
       context: ./bonus-service
@@ -104,7 +93,6 @@ services:
       - teacher_hiring_data:/var/lib/postgresql/data
 
   # --- Kafka Infrastructure ---
-
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.1
     container_name: zookeeper
@@ -114,28 +102,23 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
-  # The Kafka broker is the core of Kafka. It handles all requests from
-  # producers, consumers, and other brokers in the cluster.
   broker:
     image: confluentinc/cp-kafka:7.6.1
     container_name: broker
     networks:
       - hcb-top-teacher-net
     ports:
-      # Exposes the Kafka broker to the host machine for local development.
       - "9092:9092"
     depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      # Listeners for communication within the Docker network.
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
-  # Kafka UI provides a web-based interface for managing and monitoring your Kafka cluster.
   kafka-ui:
     image: ghcr.io/kafbat/kafka-ui:latest
     container_name: kafka-ui
@@ -147,17 +130,14 @@ services:
     depends_on:
       - broker
     environment:
-      # Configuration for connecting to the Kafka cluster.
       KAFKA_CLUSTERS_0_NAME: local-kafka-cluster
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker:29092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
 
-# Define the network for all services to communicate on
 networks:
   hcb-top-teacher-net:
     driver: bridge
 
-# Define volumes to persist database data
 volumes:
   managers_bonus_data:
   task_management_data:

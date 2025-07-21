@@ -4,13 +4,13 @@ ARG NODE_VERSION=24.4
 
 ################################################################################
 # Use node image for base image for all stages.
-FROM node:${NODE_VERSION}-alpine as base
+FROM node:${NODE_VERSION}-alpine AS base
 # Set working directory for all build stages.
 WORKDIR /app
 
 ################################################################################
 # Create a stage for installing production dependecies.
-FROM base as deps
+FROM base AS deps
 
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
@@ -19,7 +19,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 ################################################################################
 # Create a stage for building the application.
-FROM base as build
+FROM base AS build
 
 # Download additional development dependencies before building, as some projects require
 # "devDependencies" to be installed to build. If you don't need this, remove this step.
@@ -36,10 +36,10 @@ RUN npm run build:nest
 ################################################################################
 # Create a new stage to run the application with minimal runtime dependencies
 # where the necessary files are copied from the build stage.
-FROM base as production
+FROM base AS production
 
 # Use production node environment by default.
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 # Run the application as a non-root user.
 USER node
@@ -55,9 +55,9 @@ COPY --from=build /app/.env .
 CMD npm run start:prod
 
 ################################################################################
-FROM base as development
+FROM base AS development
 
-ENV NODE_ENV development
+ENV NODE_ENV=development
 
 COPY package*.json .
 COPY . .
