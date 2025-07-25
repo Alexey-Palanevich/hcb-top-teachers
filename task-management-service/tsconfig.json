@@ -16,6 +16,12 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "0-business-rules/*": ["src/0-business-rules/*"],
+      "1-application-rules/*": ["src/1-application-rules/*"],
+      "2-adapters/*": ["src/2-adapters/*"],
+      "3-drivers/*": ["src/3-drivers/*"],
+    }
   }
 }
