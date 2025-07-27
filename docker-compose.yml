@@ -1,4 +1,45 @@
 services:
+  # --- Application Services ---
+  bonus_service:
+    build:
+      context: ./bonus-service
+      dockerfile: Dockerfile
+      # TODO: think how to switch target
+      target: development
+    env_file:
+      - ./bonus-service/.env
+    ports:
+      - "3001:3000"
+    networks:
+      - hcb-top-teacher-net
+    depends_on:
+      - broker
+      - bonus_db
+    volumes:
+      - ./bonus-service:/app
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--spider', 'http://0.0.0.0:3000/healthcheck'] # run inside container
+      interval: 2s
+      timeout: 10s
+      retries: 5
+
+
+  bonus_db:
+    image: postgres:17.5-bookworm
+    env_file:
+      - ./bonus-service/.env
+    ports:
+      - "5431:5432"
+    networks:
+      - hcb-top-teacher-net
+    volumes:
+      - bonus_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 2s
+      timeout: 10s
+      retries: 5
+
   # --- Kafka Infrastructure ---
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.1
@@ -50,3 +91,6 @@ services:
 networks:
   hcb-top-teacher-net:
     driver: bridge
+
+volumes:
+  bonus_data:
