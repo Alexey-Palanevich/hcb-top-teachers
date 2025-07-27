@@ -1,0 +1,21 @@
+{
+  "name": "hcb-top-teachers",
+  "version": "0.1.0",
+  "description": "Practicing knowledge from different sources",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "docker compose up",
+    "dev:start": "docker compose up -d --build",
+    "dev:clean": "docker compose down -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Alexey-Palanevich/hcb-top-teachers.git"
+  },
+  "author": "Aliaksei Palanevich",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/Alexey-Palanevich/hcb-top-teachers/issues"
+  },
+  "homepage": "https://github.com/Alexey-Palanevich/hcb-top-teachers#readme"
+}
