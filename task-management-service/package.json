@@ -19,8 +19,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "docker": "docker compose exec -it task_management_service",
-    "mig:create": "npm run docker -- npx prisma migrate dev --create-only",
-    "mig:sync": "npm run docker -- npx prisma generate && prisma migrate deploy",
+    "prisma:migrate": "npm run docker -- npx prisma migrate dev",
+    "prisma:generate": "npm run docker -- npx prisma generate",
+    "mig:create": "npm run prisma:migrate -- --create-only",
+    "mig:sync": "npm run prisma:generate && npm run prisma:migrate -- deploy"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.5",
@@ -28,6 +30,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/microservices": "^11.1.5",
     "@nestjs/platform-fastify": "^11.1.5",
+    "@prisma/client": "^6.12.0",
     "kafkajs": "^2.2.4",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"

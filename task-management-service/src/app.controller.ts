@@ -7,7 +7,7 @@ export class AppController {
 
   @Get('healthcheck')
   healthcheck() {
-    console.log('Healthcheck: task-management-service')
+    console.log('Healthcheck: task-management-service');
     return 1;
   }
 
