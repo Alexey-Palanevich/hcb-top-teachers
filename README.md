@@ -35,3 +35,33 @@ Let's define the goals I want to achieve:
   - [ ] Practice evolution of a system
 - [ ] ...
 
+## Get Started
+
+### Requirements
+
+I'll try to avoid dependency on specific programs. Right now to run the project, you need only:
+
+ - Installed [docker](https://docs.docker.com/get-started/get-docker/)
+
+### Run locally
+
+0. (Optional) Check you have working docker
+```shell
+docker -v
+```
+
+1. Run docker via docker compose file
+```shell
+docker compose up -d --build
+```
+
+2. Stop docker
+```shell
+docker compose down
+```
+
+2. (Alternative) Stop docker with clean volumes
+```shell
+docker compose down -v
+```
+
