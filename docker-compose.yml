@@ -1,0 +1,96 @@
+services:
+  # --- Application Services ---
+  bonus_service:
+    build:
+      context: ./bonus-service
+      dockerfile: Dockerfile
+      # TODO: think how to switch target
+      target: development
+    env_file:
+      - ./bonus-service/.env
+    ports:
+      - "3001:3000"
+    networks:
+      - hcb-top-teacher-net
+    depends_on:
+      - broker
+      - bonus_db
+    volumes:
+      - ./bonus-service:/app
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--spider', 'http://0.0.0.0:3000/healthcheck'] # run inside container
+      interval: 2s
+      timeout: 10s
+      retries: 5
+
+
+  bonus_db:
+    image: postgres:17.5-bookworm
+    env_file:
+      - ./bonus-service/.env
+    ports:
+      - "5431:5432"
+    networks:
+      - hcb-top-teacher-net
+    volumes:
+      - bonus_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 2s
+      timeout: 10s
+      retries: 5
+
+  # --- Kafka Infrastructure ---
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    container_name: zookeeper
+    networks:
+      - hcb-top-teacher-net
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: broker
+    networks:
+      - hcb-top-teacher-net
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "9092" ]
+      interval: 2s
+      timeout: 10s
+      retries: 10
+
+
+  kafka-ui:
+    image: ghcr.io/kafbat/kafka-ui:latest
+    container_name: kafka-ui
+    networks:
+      - hcb-top-teacher-net
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - broker
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local-kafka-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker:29092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+
+networks:
+  hcb-top-teacher-net:
+    driver: bridge
+
+volumes:
+  bonus_data:
