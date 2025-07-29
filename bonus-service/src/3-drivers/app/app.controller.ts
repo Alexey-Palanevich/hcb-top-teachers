@@ -1,6 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
-import { Ctx, EventPattern, KafkaContext, Payload } from "@nestjs/microservices";
+import { AppService } from '3-drivers/app/app.service';
+import {
+  Ctx,
+  EventPattern,
+  KafkaContext,
+  Payload,
+} from '@nestjs/microservices';
 
 @Controller()
 export class AppController {

@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { Kafka, Producer } from "kafkajs";
+import { Kafka, Producer } from 'kafkajs';
 
 @Injectable()
 export class AppService implements OnModuleInit {
