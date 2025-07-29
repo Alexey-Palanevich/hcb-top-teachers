@@ -50,7 +50,7 @@ const getPath = (pathTo) => {
  *
  * ```
  *
- * @param {Layer[]} layers - Ordered list of layers, from innermost (most abstract) to outermost (most concrete)
+ * @param {Layer} layers - Ordered list of layers, from innermost (most abstract) to outermost (most concrete)
  * @returns {Zone[]} - Array of zone objects for ESLint configuration
  */
 export const getDependenciesFlowInward = (
