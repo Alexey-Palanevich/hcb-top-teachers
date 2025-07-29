@@ -23,10 +23,10 @@ export class AppController {
   }
 
   @EventPattern('TaskRating')
-  async handleTaskRating(
-      @Payload() value: unknown,
-      @Ctx() context: KafkaContext,
-  ) {
-    console.log(`Received on ${context.getTopic()}[${context.getPartition()}]:`, value);
+  handleTaskRating(@Payload() value: unknown, @Ctx() context: KafkaContext) {
+    console.log(
+      `Received on ${context.getTopic()}[${context.getPartition()}]:`,
+      value,
+    );
   }
 }
