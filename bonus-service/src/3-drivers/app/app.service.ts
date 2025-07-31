@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { Kafka, Producer } from "kafkajs";
+import { Kafka, Producer } from 'kafkajs';
 
 @Injectable()
 export class AppService implements OnModuleInit {
@@ -22,9 +22,9 @@ export class AppService implements OnModuleInit {
           topic: 'TaskRating',
           numPartitions: 1,
           replicationFactor: 1,
-        }
+        },
       ],
-      waitForLeaders: true
+      waitForLeaders: true,
     });
     await admin.disconnect();
   }

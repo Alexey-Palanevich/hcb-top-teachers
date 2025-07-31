@@ -1,0 +1,45 @@
+name: Bonus Service Pull Request
+run-name: Check ${{ github.actor }}'s PR on Bonus Service
+
+on:
+  pull_request:
+    paths:
+      - 'bonus-service/**'
+
+env:
+  WORKING_DIRECTORY: './bonus-service'
+defaults:
+  run:
+    working-directory: bonus-service
+
+jobs:
+  linter:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Setup Nodejs
+        uses: ./.github/actions/setup-nodejs
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+
+      - name: Run Linter
+        run: npm run lint
+
+  unit-tests:
+    needs: [linter]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Setup Nodejs
+        uses: ./.github/actions/setup-nodejs
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+
+      - name: Run Unit Tests
+        run: npm run test

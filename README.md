@@ -22,6 +22,7 @@ Let's define the goals I want to achieve:
   - [ ] Practice `Message Broker` technologies
   - [ ] Practice the evolution of systems communication 
   - [ ] Setup `Monitoring` & `Observability`
+  - [ ] Practice writing `Architecture Decision Record` (ADR)
 - [ ] Practice CI\CD
   - [ ] Maintaining a well-supported history of commits, PRs, and issues
   - [ ] Find out linter's best practice

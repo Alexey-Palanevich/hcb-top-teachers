@@ -1,6 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
-import { Ctx, EventPattern, KafkaContext, Payload } from "@nestjs/microservices";
+import { AppService } from '3-drivers/app/app.service';
+import {
+  Ctx,
+  EventPattern,
+  KafkaContext,
+  Payload,
+} from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
@@ -18,10 +23,10 @@ export class AppController {
   }
 
   @EventPattern('TaskRating')
-  async handleTaskRating(
-      @Payload() value: unknown,
-      @Ctx() context: KafkaContext,
-  ) {
-    console.log(`Received on ${context.getTopic()}[${context.getPartition()}]:`, value);
+  handleTaskRating(@Payload() value: unknown, @Ctx() context: KafkaContext) {
+    console.log(
+      `Received on ${context.getTopic()}[${context.getPartition()}]:`,
+      value,
+    );
   }
 }
