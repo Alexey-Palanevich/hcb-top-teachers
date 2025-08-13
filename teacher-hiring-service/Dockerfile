@@ -22,7 +22,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 FROM base AS build
 
 # Download additional development dependencies before building, as some projects require
-# "devDependencies" to be installed to build.
+# "devDependencies" to be installed to build. If you don't need this, remove this step.
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
@@ -31,7 +31,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 # Copy the rest of the source files into the image.
 COPY . .
 # Run the build script.
-RUN npm run build
+RUN npm run build:nest
 
 ################################################################################
 # Create a new stage to run the application with minimal runtime dependencies
@@ -53,28 +53,6 @@ COPY --from=build /app/.env .
 
 # Run the application.
 CMD npm run start:prod
-
-################################################################################
-# Create a new stage to run linter
-FROM build AS linter
-
-ENV NODE_ENV=test
-
-USER node
-
-CMD npm run lint
-
-
-################################################################################
-# Create a new stage to run tests
-
-FROM build AS test
-
-ENV NODE_ENV=test
-
-USER node
-
-CMD npm run test
 
 ################################################################################
 FROM base AS development

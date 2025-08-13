@@ -5,7 +5,7 @@ services:
       context: ./bonus-service
       dockerfile: Dockerfile
       # TODO: think how to switch target
-      target: development
+      target: production
     env_file:
       - ./bonus-service/.env
     ports:

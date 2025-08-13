@@ -34,7 +34,7 @@ Let's define the goals I want to achieve:
   - [ ] Splitting code on features (vertical)
   - [ ] Enforce Contributors to follow Clean Architecture
   - [ ] Practice evolution of a system
-- [ ] ...
+- [ ] Practice authentication
 
 ## Get Started
 

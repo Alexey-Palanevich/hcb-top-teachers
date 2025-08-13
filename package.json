@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/Alexey-Palanevich/hcb-top-teachers/issues"
   },
-  "homepage": "https://github.com/Alexey-Palanevich/hcb-top-teachers#readme"
+  "homepage": "https://github.com/Alexey-Palanevich/hcb-top-teachers#readme",
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.7"
+  }
 }
